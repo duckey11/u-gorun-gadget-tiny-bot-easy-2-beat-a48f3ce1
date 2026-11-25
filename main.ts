@@ -13,10 +13,10 @@
 //  - Same-bar buys were each sized at 20% of equity with no regard for cash,
 //    so clustered entries could exceed available cash (insufficient_cash at
 //    decision). Now total planned spend per reply is capped at cash.
-//  - Entry is level-based (fast SMA already above slow SMA), not only on the
-//    cross bar: a trend that began during warmup is entered at once, and an
-//    entry whose fill was rejected is retried on the next bar instead of
-//    waiting for a fresh cross. Exits unchanged (cross down or 8% stop).
+//  - Entry is cross-only: buy only on the bar where the fast SMA crosses
+//    above the slow SMA. Level-based entry (fast already above slow)
+//    overshot in a falling market and churned (PnL -1,008 in dev).
+//    Exits unchanged (cross down or 8% stop).
 import * as readline from "node:readline";
 
 const FAST = 5; // SMA cepat (bar)
@@ -95,7 +95,7 @@ function handleBatch(msg: any): any {
       const close = hist[hist.length - 1];
       const hasPos = positions.has(sym);
 
-      const trendUp = fast > slow;
+      const crossUp = prevFast <= prevSlow && fast > slow;
       const crossDown = prevFast >= prevSlow && fast < slow;
 
       if (hasPos) {
@@ -112,7 +112,7 @@ function handleBatch(msg: any): any {
             max_slippage_bps: MAX_SLIPPAGE_BPS,
           });
         }
-      } else if (trendUp) {
+      } else if (crossUp) {
         if (positions.size + plannedBuys >= maxOpen) continue;
         // Ukuran per entry 20% ekuitas, tapi total belanja satu reply tidak
         // boleh melewati kas yang tersedia (kalau tidak, harness menolak
