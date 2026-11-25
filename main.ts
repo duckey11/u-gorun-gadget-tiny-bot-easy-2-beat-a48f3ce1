@@ -3,8 +3,8 @@
 // Reads all parameters (symbols, scales, capital, caps, fees, warmup) from hello.
 import * as readline from "node:readline";
 
-const FAST = 8; // SMA cepat (bar)
-const SLOW = 24; // SMA lambat (bar)
+const FAST = 5; // SMA cepat (bar)
+const SLOW = 12; // SMA lambat (bar)
 const STOP_BPS = 800; // stop loss 8% di bawah harga masuk
 const WEIGHT_BPS = 2000; // 20% ekuitas per posisi
 
