@@ -25,7 +25,11 @@ const FAST = 3; // SMA cepat (bar)
 const SLOW = 8; // SMA lambat (bar)
 const STOP_BPS = 800; // stop loss 8% di bawah harga masuk
 const WEIGHT_BPS = 2000; // 20% ekuitas per posisi
-const MAX_SLIPPAGE_BPS = 200; // toleransi fill sendiri: 2% dari close bar keputusan
+const MAX_SLIPPAGE_BPS = 200; // Toleransi fill bot sendiri, 2% dari close bar keputusan.
+// Bukan parameter model pool harness (fees.slippage_bps = 5 bps): harness
+// mengisi di open bar berikut dikali dampak pool, jadi harga fill bisa
+// bergeser dari close bar keputusan; toleransi 200 bps memberi ruang
+// untuk geseran itu supaya fill tidak ditolak sebagai max_slippage.
 
 let cfg: any = null;
 const closes = new Map<string, bigint[]>();
