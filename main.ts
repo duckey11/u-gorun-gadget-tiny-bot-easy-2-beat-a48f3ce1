@@ -16,11 +16,13 @@
 //  - Entry is cross-only: buy only on the bar where the fast SMA crosses
 //    above the slow SMA. Level-based entry (fast already above slow)
 //    overshot in a falling market and churned (PnL -1,008 in dev).
+//    SMA 3/8 (was 5/12): the faster pair exits whipsaws sooner in the
+//    falling dev window, after cross-only 5/12 still scored -972.74.
 //    Exits unchanged (cross down or 8% stop).
 import * as readline from "node:readline";
 
-const FAST = 5; // SMA cepat (bar)
-const SLOW = 12; // SMA lambat (bar)
+const FAST = 3; // SMA cepat (bar)
+const SLOW = 8; // SMA lambat (bar)
 const STOP_BPS = 800; // stop loss 8% di bawah harga masuk
 const WEIGHT_BPS = 2000; // 20% ekuitas per posisi
 const MAX_SLIPPAGE_BPS = 200; // toleransi fill sendiri: 2% dari close bar keputusan
